@@ -1,0 +1,34 @@
+﻿<Window x:Class="Lab1_CRUD.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Lab1_CRUD"
+        mc:Ignorable="d"
+        Title="Cinema" Height="750" Width="525">
+    <Grid>
+        <ListBox x:Name="listDirector" HorizontalAlignment="Left" Height="325" Margin="32,46,0,0" VerticalAlignment="Top" Width="210" SelectionChanged="listDirector_SelectionChanged"/>
+        <ListBox x:Name="listMovies" HorizontalAlignment="Left" Height="325" Margin="270,46,0,0" VerticalAlignment="Top" Width="210" SelectionChanged="listMovies_SelectionChanged"/>
+        <Label x:Name="lblDirector" Content="Directors" HorizontalAlignment="Left" Margin="32,18,0,0" VerticalAlignment="Top" FontWeight="Bold" FontSize="14"/>
+        <Label x:Name="lblMovies" Content="Movies" HorizontalAlignment="Left" Margin="270,20,0,0" VerticalAlignment="Top" FontSize="14" FontWeight="Bold"/>
+        <TextBox x:Name="txtDirectorId" HorizontalAlignment="Left" Height="26" Margin="32,401,0,0" TextWrapping="Wrap" Text="&#xD;&#xA;" VerticalAlignment="Top" Width="210" FontSize="14" TextChanged="txtDirectorId_TextChanged"/>
+        <Label x:Name="lblDirectorId" Content="Director ID" HorizontalAlignment="Left" Margin="32,376,0,0" VerticalAlignment="Top"/>
+        <TextBox x:Name="txtDirectorName" HorizontalAlignment="Left" Height="26" Margin="32,456,0,0" TextWrapping="Wrap" Text="&#xA;" VerticalAlignment="Top" Width="210" FontSize="14"/>
+        <TextBox x:Name="txtDirectorBirthday" HorizontalAlignment="Left" Height="26" Margin="32,513,0,0" TextWrapping="Wrap" Text="&#xA;" VerticalAlignment="Top" Width="210" FontSize="14"/>
+        <Label x:Name="lblDirectorName" Content="Full name" HorizontalAlignment="Left" Margin="32,430,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="lblDirectorBirth" Content="Birthday" HorizontalAlignment="Left" Margin="32,487,0,0" VerticalAlignment="Top"/>
+        <TextBox x:Name="txtMovieTitle" HorizontalAlignment="Left" Height="26" Margin="267,401,0,0" TextWrapping="Wrap" Text="&#xA;" VerticalAlignment="Top" Width="210" FontSize="14"/>
+        <TextBox x:Name="txtMovieReleaseDate" HorizontalAlignment="Left" Height="26" Margin="267,456,0,0" TextWrapping="Wrap" Text="&#xA;" VerticalAlignment="Top" Width="210" FontSize="14"/>
+        <Label x:Name="lblMovieTitle" Content="Title" HorizontalAlignment="Left" Margin="267,376,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="lblMovieReleaseDate" Content="Release date" HorizontalAlignment="Left" Margin="267,430,0,0" VerticalAlignment="Top"/>
+        <TextBox x:Name="txtMovieDirector" HorizontalAlignment="Left" Height="26" Margin="267,513,0,0" TextWrapping="Wrap" Text="&#xA;" VerticalAlignment="Top" Width="210" FontSize="14"/>
+        <Label x:Name="lblMovieDirector" Content="Director" HorizontalAlignment="Left" Margin="267,487,0,0" VerticalAlignment="Top"/>
+        <Button x:Name="btnInsertDirector" Content="Insert" HorizontalAlignment="Left" Margin="32,556,0,0" VerticalAlignment="Top" Width="98" Height="35" FontSize="16" Click="btnInsertDirector_Click"/>
+        <Button x:Name="btnUpdateDirector" Content="Update" HorizontalAlignment="Left" Margin="144,556,0,0" VerticalAlignment="Top" Width="98" Height="35" FontSize="16" IsEnabled="False" Click="btnUpdateDirector_Click"/>
+        <Button x:Name="btnDeleteDirector" Content="Delete" HorizontalAlignment="Left" Margin="32,610,0,0" VerticalAlignment="Top" Width="98" Height="35" FontSize="16" IsEnabled="False"/>
+        <Button x:Name="btnInsertMovie" Content="Insert" HorizontalAlignment="Left" Margin="267,556,0,0" VerticalAlignment="Top" Width="98" Height="35" FontSize="16" IsEnabled="False"/>
+        <Button x:Name="btnUpdateMovie" Content="Update" HorizontalAlignment="Left" Margin="379,556,0,0" VerticalAlignment="Top" Width="98" Height="35" FontSize="16" IsEnabled="False"/>
+        <Button x:Name="btnDeleteMovie" Content="Delete" HorizontalAlignment="Left" Margin="270,610,0,0" VerticalAlignment="Top" Width="95" Height="35" FontSize="16" IsEnabled="False"/>
+
+    </Grid>
+</Window>
