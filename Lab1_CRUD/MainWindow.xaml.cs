@@ -22,18 +22,28 @@ namespace Lab1_CRUD
     /// </summary>
     public partial class MainWindow : Window
     {
-        string connectionString = @"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=D:\SKRIVBORD\CINEMA.MDF;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=True;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
+        List<Director> directors = new List<Director>();
+        Connection connection = new Connection();
+        public readonly string connectionString = Connection.ConnectionString;
+
         public MainWindow()
         {
             InitializeComponent();
             PopulateDirectorListBox();
-            // MÅSTE KOLLA UPP
-            //btnInsertDirector.IsEnabled = !string.IsNullOrWhiteSpace(txtDirectorId.Text);
+;
         }
 
         // Metod to populate the director listbox
         private void PopulateDirectorListBox()
         {
+            // FÖRSÖKER ANVÄNDA KLASSERNA HÄR ISTÄLLET
+            //listDirector.ItemsSource = directors;
+            //listDirector.DisplayMemberPath = "DirectorInfo";
+            //DataAccess db = new DataAccess();
+
+            //directors = db.GetDirector();
+            //listDirector. //visa här
+
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 try
@@ -349,15 +359,6 @@ namespace Lab1_CRUD
             txtMovieId.Text = "";
         }
 
-        private void txtDirectorId_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            //btnInsertDirector.IsEnabled = !string.IsNullOrWhiteSpace(txtDirectorId.Text);
-            if(txtDirectorName.Text == "")
-            {
-                btnInsertDirector.IsEnabled = true;
-            }
-        }
-
         private void listDirector_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             PopulateDirectorTextboxes();
@@ -406,5 +407,14 @@ namespace Lab1_CRUD
             }
         }
 
+        private void txtDirectorId_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            //btnInsertDirector.IsEnabled = !string.IsNullOrWhiteSpace(txtDirectorId.Text);
+        }
+
+        private void txtDirectorName_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            //btnInsertDirector.IsEnabled = !string.IsNullOrWhiteSpace(txtDirectorName.Text);
+        }
     }
 }

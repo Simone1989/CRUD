@@ -13,7 +13,7 @@
         <Label x:Name="lblMovies" Content="Movies" HorizontalAlignment="Left" Margin="270,20,0,0" VerticalAlignment="Top" FontSize="14" FontWeight="Bold"/>
         <TextBox x:Name="txtDirectorId" HorizontalAlignment="Left" Height="26" Margin="32,401,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="210" FontSize="14" TextChanged="txtDirectorId_TextChanged" IsReadOnly="True"/>
         <Label x:Name="lblDirectorId" Content="Director ID" HorizontalAlignment="Left" Margin="32,376,0,0" VerticalAlignment="Top"/>
-        <TextBox x:Name="txtDirectorName" HorizontalAlignment="Left" Height="26" Margin="32,456,0,0" TextWrapping="Wrap" Text="&#xA;" VerticalAlignment="Top" Width="210" FontSize="14"/>
+        <TextBox x:Name="txtDirectorName" HorizontalAlignment="Left" Height="26" Margin="32,456,0,0" TextWrapping="Wrap" Text="&#xA;" VerticalAlignment="Top" Width="210" FontSize="14" TextChanged="txtDirectorName_TextChanged"/>
         <TextBox x:Name="txtDirectorBirthday" HorizontalAlignment="Left" Height="26" Margin="32,513,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="210" FontSize="14"/>
         <Label x:Name="lblDirectorName" Content="Full name" HorizontalAlignment="Left" Margin="32,430,0,0" VerticalAlignment="Top"/>
         <Label x:Name="lblDirectorBirth" Content="Birthday" HorizontalAlignment="Left" Margin="32,487,0,0" VerticalAlignment="Top"/>
@@ -23,7 +23,7 @@
         <Label x:Name="lblMovieReleaseDate" Content="Release date" HorizontalAlignment="Left" Margin="267,484,0,0" VerticalAlignment="Top"/>
         <TextBox x:Name="txtMovieDirector" HorizontalAlignment="Left" Height="26" Margin="267,567,0,0" TextWrapping="Wrap" Text="&#xA;" VerticalAlignment="Top" Width="210" FontSize="14"/>
         <Label x:Name="lblMovieDirector" Content="Director" HorizontalAlignment="Left" Margin="267,541,0,0" VerticalAlignment="Top"/>
-        <Button x:Name="btnInsertDirector" Content="Add" HorizontalAlignment="Left" Margin="32,610,0,0" VerticalAlignment="Top" Width="98" Height="35" FontSize="16" Click="btnInsertDirector_Click"/>
+        <Button x:Name="btnInsertDirector" Content="Add" HorizontalAlignment="Left" Margin="32,610,0,0" VerticalAlignment="Top" Width="98" Height="35" FontSize="16" Click="btnInsertDirector_Click" IsEnabled="False"/>
         <Button x:Name="btnUpdateDirector" Content="Update" HorizontalAlignment="Left" Margin="144,610,0,0" VerticalAlignment="Top" Width="98" Height="35" FontSize="16" IsEnabled="False" Click="btnUpdateDirector_Click"/>
         <Button x:Name="btnDeleteDirector" Content="Delete" HorizontalAlignment="Left" Margin="32,664,0,0" VerticalAlignment="Top" Width="98" Height="35" FontSize="16" IsEnabled="False" Click="btnDeleteDirector_Click"/>
         <Button x:Name="btnInsertMovie" Content="Add" HorizontalAlignment="Left" Margin="267,610,0,0" VerticalAlignment="Top" Width="98" Height="35" FontSize="16" Click="btnInsertMovie_Click"/>
