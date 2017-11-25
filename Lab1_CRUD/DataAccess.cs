@@ -10,14 +10,12 @@ namespace Lab1_CRUD
 {
     class DataAccess
     {
-
         public List<Director> GetDirector()
         {
             using (SqlConnection connection = new SqlConnection(Connection.ConnectionString))
             {
                 return connection.Query<Director>("SELECT * FROM Directors").ToList();
             }
-
         }
     }
 }

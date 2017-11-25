@@ -13,3 +13,20 @@ E:\Mina dokument\MON STUFF\Repos\Lab 1 Databas\Lab1_CRUD\Lab1_CRUD\obj\Debug\Lab
 E:\Mina dokument\MON STUFF\Repos\Lab 1 Databas\Lab1_CRUD\Lab1_CRUD\obj\Debug\Lab1_CRUD.csproj.CoreCompileInputs.cache
 E:\Mina dokument\MON STUFF\Repos\Lab 1 Databas\Lab1_CRUD\Lab1_CRUD\obj\Debug\Lab1_CRUD.exe
 E:\Mina dokument\MON STUFF\Repos\Lab 1 Databas\Lab1_CRUD\Lab1_CRUD\obj\Debug\Lab1_CRUD.pdb
+C:\Users\Mon\source\repos\Labbar\Lab1 Databas\CRUD_Lab1\Lab1_CRUD\bin\Debug\Lab1_CRUD.exe.config
+C:\Users\Mon\source\repos\Labbar\Lab1 Databas\CRUD_Lab1\Lab1_CRUD\bin\Debug\Lab1_CRUD.exe
+C:\Users\Mon\source\repos\Labbar\Lab1 Databas\CRUD_Lab1\Lab1_CRUD\bin\Debug\Lab1_CRUD.pdb
+C:\Users\Mon\source\repos\Labbar\Lab1 Databas\CRUD_Lab1\Lab1_CRUD\obj\Debug\Lab1_CRUD.csprojResolveAssemblyReference.cache
+C:\Users\Mon\source\repos\Labbar\Lab1 Databas\CRUD_Lab1\Lab1_CRUD\obj\Debug\MainWindow.g.cs
+C:\Users\Mon\source\repos\Labbar\Lab1 Databas\CRUD_Lab1\Lab1_CRUD\obj\Debug\App.g.cs
+C:\Users\Mon\source\repos\Labbar\Lab1 Databas\CRUD_Lab1\Lab1_CRUD\obj\Debug\Lab1_CRUD_MarkupCompile.cache
+C:\Users\Mon\source\repos\Labbar\Lab1 Databas\CRUD_Lab1\Lab1_CRUD\obj\Debug\Lab1_CRUD_MarkupCompile.lref
+C:\Users\Mon\source\repos\Labbar\Lab1 Databas\CRUD_Lab1\Lab1_CRUD\obj\Debug\MainWindow.baml
+C:\Users\Mon\source\repos\Labbar\Lab1 Databas\CRUD_Lab1\Lab1_CRUD\obj\Debug\Lab1_CRUD.g.resources
+C:\Users\Mon\source\repos\Labbar\Lab1 Databas\CRUD_Lab1\Lab1_CRUD\obj\Debug\Lab1_CRUD.Properties.Resources.resources
+C:\Users\Mon\source\repos\Labbar\Lab1 Databas\CRUD_Lab1\Lab1_CRUD\obj\Debug\Lab1_CRUD.csproj.GenerateResource.Cache
+C:\Users\Mon\source\repos\Labbar\Lab1 Databas\CRUD_Lab1\Lab1_CRUD\obj\Debug\Lab1_CRUD.csproj.CoreCompileInputs.cache
+C:\Users\Mon\source\repos\Labbar\Lab1 Databas\CRUD_Lab1\Lab1_CRUD\obj\Debug\Lab1_CRUD.exe
+C:\Users\Mon\source\repos\Labbar\Lab1 Databas\CRUD_Lab1\Lab1_CRUD\obj\Debug\Lab1_CRUD.pdb
+C:\Users\Mon\source\repos\Labbar\Lab1 Databas\CRUD_Lab1\Lab1_CRUD\bin\Debug\Dapper.dll
+C:\Users\Mon\source\repos\Labbar\Lab1 Databas\CRUD_Lab1\Lab1_CRUD\bin\Debug\Dapper.xml
