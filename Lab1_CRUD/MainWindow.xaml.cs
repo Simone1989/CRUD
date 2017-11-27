@@ -26,7 +26,10 @@ namespace Lab1_CRUD
     {
         Connection connection = new Connection();
         public readonly string connectionString = Connection.ConnectionString;
+
         private int SelectedDirector;
+        private int DirectorId;
+        private int MovieId;
 
         public MainWindow()
         {
@@ -34,7 +37,6 @@ namespace Lab1_CRUD
             PopulateDirectorListBox();
         }
 
-        private int DirectorId;
 
         // Metod to populate the director listbox, gets called when program starts and when a director is added or removed. 
         private void PopulateDirectorListBox()
@@ -105,7 +107,7 @@ namespace Lab1_CRUD
                         "Directors.Id = Movies.DirectorId WHERE DirectorId = @directorId";
                         SqlCommand command = new SqlCommand(query, connection);
                         SqlDataReader reader;
-                            command.Parameters.AddWithValue("@directorId", directorId);
+                        command.Parameters.AddWithValue("@directorId", directorId);
                         reader = command.ExecuteReader();
 
                         Dispatcher.Invoke(() =>
@@ -200,6 +202,7 @@ namespace Lab1_CRUD
 
         private void btnUpdateDirector_Click(object sender, RoutedEventArgs e)
         {
+            DirectorId = ((Director)listDirector.SelectedItem).Id;
             Task.Run(() =>
             {
                 using (SqlConnection connection = new SqlConnection(connectionString))
@@ -213,7 +216,7 @@ namespace Lab1_CRUD
                         {
                             command.Parameters.AddWithValue("@birthday", this.txtDirectorBirthday.Text);
                             command.Parameters.AddWithValue("@name", this.txtDirectorName.Text);
-                            command.Parameters.AddWithValue("@id", this.txtDirectorId.Text);
+                            command.Parameters.AddWithValue("@id", DirectorId);
                         });
                         command.ExecuteNonQuery();
                         MessageBox.Show("Updated");
@@ -237,6 +240,7 @@ namespace Lab1_CRUD
 
         private void btnDeleteDirector_Click(object sender, RoutedEventArgs e)
         {
+            DirectorId = ((Director)listDirector.SelectedItem).Id;
             Task.Run(() =>
             {
                 using (SqlConnection connection = new SqlConnection(connectionString))
@@ -248,7 +252,7 @@ namespace Lab1_CRUD
                         SqlCommand command = new SqlCommand(query, connection);
                         Dispatcher.Invoke(() =>
                         {
-                            command.Parameters.AddWithValue(@"id", txtDirectorId.Text);
+                            command.Parameters.AddWithValue(@"id", DirectorId);
                         });
                         command.ExecuteNonQuery();
                         MessageBox.Show("Successfully deleted.");
@@ -285,7 +289,6 @@ namespace Lab1_CRUD
                 {
                     try
                     {
-                        // HÄR KOMMER ETT FEL NÄR MAN INSERTAR FILMER UTAN ATT MAN HAR KLICKAT PÅ NÅTT ANNAT FÖRST
                         connection.Open();
                         string query = "INSERT INTO Movies (Title, ReleaseYear, DirectorId) VALUES (@title, @year, @director)";
                         SqlCommand command = new SqlCommand(query, connection);
@@ -318,6 +321,7 @@ namespace Lab1_CRUD
 
         private void btnUpdateMovie_Click(object sender, RoutedEventArgs e)
         {
+            MovieId = ((Movie)listMovies.SelectedItem).Id;
             Task.Run(() =>
             {
                 using (SqlConnection connection = new SqlConnection(connectionString))
@@ -332,7 +336,7 @@ namespace Lab1_CRUD
                             command.Parameters.AddWithValue("@title", this.txtMovieTitle.Text);
                             command.Parameters.AddWithValue("@year", this.txtMovieReleaseDate.Text);
                             command.Parameters.AddWithValue("@directorId", this.txtMovieDirector.Text);
-                            command.Parameters.AddWithValue("@movieId", this.txtMovieId.Text);
+                            command.Parameters.AddWithValue("@movieId", MovieId);
                         });
                         command.ExecuteNonQuery();
                         MessageBox.Show("Updated.");
@@ -357,6 +361,7 @@ namespace Lab1_CRUD
 
         private void btnDeleteMovie_Click(object sender, RoutedEventArgs e)
         {
+            MovieId = ((Movie)listMovies.SelectedItem).Id;
             Task.Run(() =>
             {
                 using (SqlConnection connection = new SqlConnection(connectionString))
@@ -368,7 +373,7 @@ namespace Lab1_CRUD
                         SqlCommand command = new SqlCommand(query, connection);
                         Dispatcher.Invoke(() =>
                         {
-                            command.Parameters.AddWithValue("@movieId", this.txtMovieId.Text);
+                            command.Parameters.AddWithValue("@movieId", MovieId);
                         });
                         command.ExecuteNonQuery();
                         MessageBox.Show("Successfully deleted.");
@@ -419,11 +424,12 @@ namespace Lab1_CRUD
 
         private void listDirector_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if(listDirector.SelectedIndex >= 0)
+            if (listDirector.SelectedIndex >= 0)
             {
                 SelectedDirector = ((Director)listDirector.SelectedItem).Id;
                 PopulateMovieListBox(SelectedDirector);
                 PopulateDirectorTextboxes();
+                ClearTextboxes();
             }
 
             // Buttons get enabled/disabled depending on selections in listboxes
@@ -433,7 +439,6 @@ namespace Lab1_CRUD
                 btnUpdateDirector.IsEnabled = true;
                 btnDeleteMovie.IsEnabled = false;
                 btnUpdateMovie.IsEnabled = false;
-                ClearTextboxes();
             }
 
         }
@@ -441,6 +446,7 @@ namespace Lab1_CRUD
         private void listMovies_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             PopulateMovieTextboxes();
+            ClearTextboxes();
 
             // Buttons get enabled/disabled depending on selections in listboxes
             if (listMovies.SelectedIndex != -1)
@@ -449,7 +455,6 @@ namespace Lab1_CRUD
                 btnUpdateMovie.IsEnabled = true;
                 btnDeleteDirector.IsEnabled = false;
                 btnUpdateDirector.IsEnabled = false;
-                ClearTextboxes();
             }
         }
 
@@ -457,18 +462,18 @@ namespace Lab1_CRUD
         {
             Dispatcher.Invoke(() =>
             {
-                if (listMovies.SelectedIndex != -1)
-                {
-                    //txtDirectorId.Text = "";
-                    //txtDirectorName.Text = "";
-                    //txtDirectorBirthday.Text = "";
-                }
-                else if (listDirector.SelectedIndex != -1 || listDirector.SelectedItem == null)
+                if (listMovies.SelectedIndex == -1)
                 {
                     txtMovieDirector.Text = "";
                     txtMovieReleaseDate.Text = "";
                     txtMovieTitle.Text = "";
                     txtMovieId.Text = "";
+                }
+                else if (listDirector.SelectedIndex == -1)
+                {
+                    txtDirectorId.Text = "";
+                    txtDirectorName.Text = "";
+                    txtDirectorBirthday.Text = "";
                 }
             });
         }
