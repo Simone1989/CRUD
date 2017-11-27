@@ -21,11 +21,12 @@ namespace Lab1_CRUD
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
+    /// 
     public partial class MainWindow : Window
     {
-        List<Director> directors = new List<Director>();
         Connection connection = new Connection();
         public readonly string connectionString = Connection.ConnectionString;
+        private int SelectedDirector;
 
         public MainWindow()
         {
@@ -33,21 +34,19 @@ namespace Lab1_CRUD
             PopulateDirectorListBox();
         }
 
+        private int DirectorId;
+
         // Metod to populate the director listbox, gets called when program starts and when a director is added or removed. 
         private void PopulateDirectorListBox()
         {
-
             Task.Run(() =>
             {
                 Dispatcher.Invoke(() =>
                 {
-                    //btnInsertDirector.IsEnabled = false;
-                    //btnInsertMovie.IsEnabled = false;
-                    //btnClearTextboxes.IsEnabled = false;
                     DisableButtonsWhenLoading();
-                    listDirector.Items.Add("Loading database, please wait...");
                 });
-                Thread.Sleep(2000);
+                Thread.Sleep(1500);
+
                 using (SqlConnection connection = new SqlConnection(connectionString))
                 {
                     Dispatcher.Invoke(() =>
@@ -57,16 +56,20 @@ namespace Lab1_CRUD
                     try
                     {
                         connection.Open();
-                        string query = "SELECT Fullname FROM Directors";
+                        string query = "SELECT * FROM Directors";
                         SqlCommand command = new SqlCommand(query, connection);
                         SqlDataReader reader = command.ExecuteReader();
-                        Dispatcher.Invoke(() =>
+                        while (reader.Read())
                         {
-                            while (reader.Read())
+                            int id = reader.GetInt32(0);
+                            string fullanme = reader.GetString(1);
+                            DateTime birthday = reader.GetDateTime(2);
+
+                            Dispatcher.Invoke(() =>
                             {
-                                listDirector.Items.Add(reader["Fullname"]);
-                            }
-                        });
+                                listDirector.Items.Add(new Director(id, fullanme, birthday));
+                            });
+                        }
                     }
                     catch (SqlException ex)
                     {
@@ -87,10 +90,12 @@ namespace Lab1_CRUD
         }
 
         // Gets called when a director is selected in the director listbox and when a movie is added or removed 
-        private void PopulateMovieListBox()
+        private void PopulateMovieListBox(int directorId)
         {
+            this.DirectorId = directorId;
             Task.Run(() =>
             {
+                int dirId = directorId;
                 using (SqlConnection connection = new SqlConnection(connectionString))
                 {
                     try
@@ -100,17 +105,19 @@ namespace Lab1_CRUD
                         "Directors.Id = Movies.DirectorId WHERE DirectorId = @directorId";
                         SqlCommand command = new SqlCommand(query, connection);
                         SqlDataReader reader;
-                        Dispatcher.Invoke(() =>
-                        {
-                            command.Parameters.AddWithValue("@directorId", this.txtDirectorId.Text);
-                        });
+                            command.Parameters.AddWithValue("@directorId", directorId);
                         reader = command.ExecuteReader();
+
                         Dispatcher.Invoke(() =>
                         {
                             listMovies.Items.Clear();
                             while (reader.Read())
                             {
-                                listMovies.Items.Add(reader["Title"]);
+                                int id = reader.GetInt32(0);
+                                string title = reader.GetString(1);
+                                int releaseDate = reader.GetInt32(2);
+                                int director = reader.GetInt32(3);
+                                listMovies.Items.Add(new Movie(id, title, releaseDate, directorId));
                             }
                         });
                     }
@@ -130,94 +137,32 @@ namespace Lab1_CRUD
         // Method to write out the database values of the selected director in textboxes
         private void PopulateDirectorTextboxes()
         {
-            Task.Run(() =>
+            if (listDirector.SelectedIndex >= 0)
             {
-                using (SqlConnection connection = new SqlConnection(connectionString))
+                Director d = (Director)listDirector.SelectedItem;
+                SelectedDirector = (d).Id;
+                Dispatcher.Invoke(() =>
                 {
-                    string query = "SELECT * FROM Directors WHERE Fullname = @fullname";
-                    SqlCommand command = new SqlCommand(query, connection);
-                    Dispatcher.Invoke(() =>
-                    {
-                        command.Parameters.AddWithValue("@fullname", listDirector.SelectedItem ?? (object)DBNull.Value);
-                    });
-                    SqlDataReader reader;
-                    try
-                    {
-                        connection.Open();
-                        reader = command.ExecuteReader();
-                        Dispatcher.Invoke(() =>
-                        {
-                            while (reader.Read())
-                            {
-                                string id = reader.GetInt32(0).ToString();
-                                string fullanme = reader.GetString(1);
-                                string birthday = reader.GetDateTime(2).Date.ToShortDateString();
-
-                                txtDirectorId.Text = id;
-                                txtDirectorName.Text = fullanme;
-                                txtDirectorBirthday.Text = birthday;
-                            }
-                        });
-
-                    }
-                    catch (SqlException ex)
-                    {
-                        MessageBox.Show(ex.Message);
-                    }
-                    finally
-                    {
-                        connection.Close();
-                    }
-                }
-            });
+                    txtDirectorId.Text = (d).Id.ToString();
+                    txtDirectorName.Text = (d).Fullname;
+                    txtDirectorBirthday.Text = (d).Birthday.ToShortDateString();
+                });
+            }
         }
 
         // Method to write out the database values of the selected movie in textboxes
         private void PopulateMovieTextboxes()
         {
-            Task.Run(() =>
+            if (listMovies.SelectedIndex >= 0)
             {
-                using (SqlConnection connection = new SqlConnection(connectionString))
+                Dispatcher.Invoke(() =>
                 {
-                    string query = "SELECT * FROM Movies WHERE Title = @title";
-                    SqlCommand command = new SqlCommand(query, connection);
-                    Dispatcher.Invoke(() =>
-                    {
-                        command.Parameters.AddWithValue(@"title", listMovies.SelectedItem ?? (object)DBNull.Value);
-                    });
-                    SqlDataReader reader;
-                    try
-                    {
-                        connection.Open();
-                        reader = command.ExecuteReader();
-
-                        Dispatcher.Invoke(() =>
-                        {
-                            while (reader.Read())
-                            {
-                                // FÖRSÖK JOINA TABELLERNA SÅ ATT DET STÅR ETT NAMN I DIRECTOR ISTÄLLET FÖR EN SIFFRA
-                                string id = reader.GetInt32(0).ToString();
-                                string title = reader.GetString(1);
-                                string releaseDate = reader.GetInt32(2).ToString();
-                                string director = reader.GetInt32(3).ToString();
-
-                                txtMovieId.Text = id;
-                                txtMovieTitle.Text = title;
-                                txtMovieReleaseDate.Text = releaseDate;
-                                txtMovieDirector.Text = director;
-                            }
-                        });
-                    }
-                    catch (SqlException ex)
-                    {
-                        MessageBox.Show(ex.Message);
-                    }
-                    finally
-                    {
-                        connection.Close();
-                    }
-                }
-            });
+                    txtMovieId.Text = ((Movie)listMovies.SelectedItem).Id.ToString();
+                    txtMovieTitle.Text = ((Movie)listMovies.SelectedItem).Title;
+                    txtMovieReleaseDate.Text = ((Movie)listMovies.SelectedItem).ReleaseYear.ToString();
+                    txtMovieDirector.Text = ((Movie)listMovies.SelectedItem).DirectorId.ToString();
+                });
+            }
         }
 
         // Button clicks director
@@ -238,12 +183,7 @@ namespace Lab1_CRUD
                             command.Parameters.AddWithValue("@name", this.txtDirectorName.Text);
                         });
                         command.ExecuteNonQuery();
-                        Dispatcher.Invoke(() =>
-                        {
-                            listDirector.Items.Add(this.txtDirectorName.Text);
-                        });
                         MessageBox.Show("Saved.");
-
                     }
                     catch (Exception ex)
                     {
@@ -252,6 +192,7 @@ namespace Lab1_CRUD
                     finally
                     {
                         connection.Close();
+                        PopulateDirectorListBox();
                     }
                 }
             });
@@ -368,7 +309,7 @@ namespace Lab1_CRUD
                     finally
                     {
                         connection.Close();
-                        PopulateMovieListBox();
+                        PopulateMovieListBox(SelectedDirector);
                         ClearTextboxes();
                     }
                 }
@@ -407,7 +348,7 @@ namespace Lab1_CRUD
                     finally
                     {
                         connection.Close();
-                        PopulateMovieListBox();
+                        PopulateMovieListBox(SelectedDirector);
                         ClearTextboxes();
                     }
                 }
@@ -443,7 +384,7 @@ namespace Lab1_CRUD
                     finally
                     {
                         connection.Close();
-                        PopulateMovieListBox();
+                        PopulateMovieListBox(SelectedDirector);
                         ClearTextboxes();
                     }
                 }
@@ -478,8 +419,12 @@ namespace Lab1_CRUD
 
         private void listDirector_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            //PopulateMovieListBox();
-            PopulateDirectorTextboxes();
+            if(listDirector.SelectedIndex >= 0)
+            {
+                SelectedDirector = ((Director)listDirector.SelectedItem).Id;
+                PopulateMovieListBox(SelectedDirector);
+                PopulateDirectorTextboxes();
+            }
 
             // Buttons get enabled/disabled depending on selections in listboxes
             if (listDirector.SelectedIndex != -1)
@@ -490,6 +435,7 @@ namespace Lab1_CRUD
                 btnUpdateMovie.IsEnabled = false;
                 ClearTextboxes();
             }
+
         }
 
         private void listMovies_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -517,7 +463,7 @@ namespace Lab1_CRUD
                     //txtDirectorName.Text = "";
                     //txtDirectorBirthday.Text = "";
                 }
-                else if (listDirector.SelectedIndex != -1)
+                else if (listDirector.SelectedIndex != -1 || listDirector.SelectedItem == null)
                 {
                     txtMovieDirector.Text = "";
                     txtMovieReleaseDate.Text = "";
@@ -527,19 +473,5 @@ namespace Lab1_CRUD
             });
         }
 
-        private void txtDirectorId_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            //btnInsertDirector.IsEnabled = !string.IsNullOrWhiteSpace(txtDirectorId.Text);
-        }
-
-        private void txtDirectorName_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            //btnInsertDirector.IsEnabled = !string.IsNullOrWhiteSpace(txtDirectorName.Text);
-        }
-
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            PopulateMovieListBox();
-        }
     }
 }
