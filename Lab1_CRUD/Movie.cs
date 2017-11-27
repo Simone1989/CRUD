@@ -12,5 +12,13 @@ namespace Lab1_CRUD
         public string Title { get; set; }
         public int ReleaseYear { get; set; }
         public int DirectorId { get; set; }
+
+        public Movie(int id, string title, int releaseYear, int directorId)
+        {
+            this.Id = id;
+            this.Title = title;
+            this.ReleaseYear = releaseYear;
+            this.DirectorId = directorId;
+        }
     }
 }

@@ -13,12 +13,11 @@ namespace Lab1_CRUD
         public string Fullname { get; set; }
         public DateTime Birthday { get; set; }
 
-        public string DirectorInfo
+        public Director(int id, string fullname, DateTime birthday)
         {
-            get
-            {
-                return $"{Fullname} (ID: {Id})";
-            }
+            this.Birthday = birthday;
+            this.Id = id;
+            this.Fullname = fullname;
         }
     }
 }

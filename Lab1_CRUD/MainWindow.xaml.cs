@@ -14,6 +14,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Data.SqlClient;
 using System.Data;
+using System.Threading;
 
 namespace Lab1_CRUD
 {
@@ -30,27 +31,31 @@ namespace Lab1_CRUD
         {
             InitializeComponent();
             PopulateDirectorListBox();
-            // FÖR ATT FÅ ALLT ATT FUNGERA IGEN: TA BORT ALLA TASKS OCH DISPATCHERS
         }
 
-        // Metod to populate the director listbox
+        // Metod to populate the director listbox, gets called when program starts and when a director is added or removed. 
         private void PopulateDirectorListBox()
         {
-            // FÖRSÖKER ANVÄNDA KLASSERNA HÄR ISTÄLLET
-            //listDirector.ItemsSource = directors;
-            //listDirector.DisplayMemberPath = "DirectorInfo";
-            //DataAccess db = new DataAccess();
-
-            //directors = db.GetDirector();
-            //listDirector. //visa här
 
             Task.Run(() =>
             {
+                Dispatcher.Invoke(() =>
+                {
+                    //btnInsertDirector.IsEnabled = false;
+                    //btnInsertMovie.IsEnabled = false;
+                    //btnClearTextboxes.IsEnabled = false;
+                    DisableButtonsWhenLoading();
+                    listDirector.Items.Add("Loading database, please wait...");
+                });
+                Thread.Sleep(2000);
                 using (SqlConnection connection = new SqlConnection(connectionString))
                 {
+                    Dispatcher.Invoke(() =>
+                    {
+                        listDirector.Items.Clear();
+                    });
                     try
                     {
-                        // När man använder whilen och reader.read ska man ladda in alla värden, som sedan ploppas in i objekt. 
                         connection.Open();
                         string query = "SELECT Fullname FROM Directors";
                         SqlCommand command = new SqlCommand(query, connection);
@@ -70,11 +75,18 @@ namespace Lab1_CRUD
                     finally
                     {
                         connection.Close();
+                        Dispatcher.Invoke(() =>
+                        {
+                            btnInsertDirector.IsEnabled = true;
+                            btnInsertMovie.IsEnabled = true;
+                            btnClearTextboxes.IsEnabled = true;
+                        });
                     }
                 }
             });
         }
 
+        // Gets called when a director is selected in the director listbox and when a movie is added or removed 
         private void PopulateMovieListBox()
         {
             Task.Run(() =>
@@ -84,7 +96,8 @@ namespace Lab1_CRUD
                     try
                     {
                         connection.Open();
-                        string query = "SELECT * FROM Movies INNER JOIN Directors ON Directors.Id = Movies.DirectorId WHERE DirectorId = @directorId";
+                        string query = "SELECT * FROM Movies INNER JOIN Directors ON " +
+                        "Directors.Id = Movies.DirectorId WHERE DirectorId = @directorId";
                         SqlCommand command = new SqlCommand(query, connection);
                         SqlDataReader reader;
                         Dispatcher.Invoke(() =>
@@ -159,6 +172,7 @@ namespace Lab1_CRUD
             });
         }
 
+        // Method to write out the database values of the selected movie in textboxes
         private void PopulateMovieTextboxes()
         {
             Task.Run(() =>
@@ -436,6 +450,7 @@ namespace Lab1_CRUD
             });
         }
 
+        // Clear the textboxes from text
         private void btnClearTextboxes_Click(object sender, RoutedEventArgs e)
         {
             Dispatcher.Invoke(() =>
@@ -450,9 +465,20 @@ namespace Lab1_CRUD
             });
         }
 
+        private void DisableButtonsWhenLoading()
+        {
+            btnInsertDirector.IsEnabled = false;
+            btnUpdateDirector.IsEnabled = false;
+            btnDeleteDirector.IsEnabled = false;
+            btnInsertMovie.IsEnabled = false;
+            btnUpdateMovie.IsEnabled = false;
+            btnDeleteMovie.IsEnabled = false;
+            btnClearTextboxes.IsEnabled = false;
+        }
+
         private void listDirector_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            PopulateMovieListBox();
+            //PopulateMovieListBox();
             PopulateDirectorTextboxes();
 
             // Buttons get enabled/disabled depending on selections in listboxes
@@ -509,6 +535,11 @@ namespace Lab1_CRUD
         private void txtDirectorName_TextChanged(object sender, TextChangedEventArgs e)
         {
             //btnInsertDirector.IsEnabled = !string.IsNullOrWhiteSpace(txtDirectorName.Text);
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            PopulateMovieListBox();
         }
     }
 }
